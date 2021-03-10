@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:promoscrapperUI/main.dart';
 import 'package:promoscrapperUI/pelando.dart';
+import 'gatry.dart';
 
 class PlatformSelector extends StatefulWidget {
   @override
@@ -101,7 +101,7 @@ class _PlatformSelectorState extends State<PlatformSelector> {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
+                      MaterialPageRoute(builder: (context) => Gatry()));
                 },
               ),
             ),

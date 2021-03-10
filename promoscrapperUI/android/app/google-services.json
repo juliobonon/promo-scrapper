@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "420606977405",
+    "project_id": "promo-scrapper",
+    "storage_bucket": "promo-scrapper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420606977405:android:11d99cad2e30218d82d814",
+        "android_client_info": {
+          "package_name": "com.example.promoscrapperUI"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420606977405-jrdeci2orgenobsir2rlnj7l95d7chbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.promoscrapperUI",
+            "certificate_hash": "1736df0fafd32b11aab06cb441de0336764dc708"
+          }
+        },
+        {
+          "client_id": "420606977405-derpi9p0t6lt0srqgqd68u0bpactub90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0pDKYJUa89cTr4fJ_4LFbFg3VL3qumsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420606977405-derpi9p0t6lt0srqgqd68u0bpactub90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
