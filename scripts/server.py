@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify
 from main import Gatry, Pelando, reclameaqui
-from os import sys
+import os
 from flask_cors import CORS
 
 if __name__ == "__main__":
-    ip = sys.argv[1]
     app = Flask(__name__)
     CORS(app)
     
@@ -34,5 +33,6 @@ if __name__ == "__main__":
         return jsonify(empresa), 200
 
 
-app.run(host=ip)
+port = int(os.environ.get("PORT", 3000))
+app.run(host='0.0.0.0', port=port, threaded=True)
 
