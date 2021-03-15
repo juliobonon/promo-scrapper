@@ -16,8 +16,11 @@ enum FormType { login, register }
 class _LoginState extends State<Login> {
   final formKey = new GlobalKey<FormState>();
 
-  String _email;
-  String _password;
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _repeatEmail = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _repeatPassword = TextEditingController();
+
   FormType _formType = FormType.login;
 
   bool validateAndSave() {
@@ -34,16 +37,21 @@ class _LoginState extends State<Login> {
     if (validateAndSave()) {
       try {
         if (_formType == FormType.login) {
-          User userId =
-              await widget.auth.signInWithEmailAndPassword(_email, _password);
+          User userId = await widget.auth
+              .signInWithEmailAndPassword(_email.text, _password.text);
           print('Signed in: ' + userId.uid);
         } else {
           User userId = await widget.auth
-              .createUserWithEmailandPassword(_email, _password);
+              .createUserWithEmailandPassword(_email.text, _password.text);
           print('Registered user: ' + userId.uid);
         }
         widget.onSignedIn();
-      } catch (e) {
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
         print("Error: $e");
       }
     }
@@ -109,7 +117,7 @@ class _LoginState extends State<Login> {
             border:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
           ),
-          onSaved: (value) => _email = value,
+          controller: _email,
           validator: (value) =>
               value.isEmpty ? 'Usuário não pode ser vazio.' : null,
         ),
@@ -118,9 +126,10 @@ class _LoginState extends State<Login> {
             decoration: InputDecoration(
               hintText: "Senha",
               border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
             ),
-            onSaved: (value) => _password = value,
+            controller: _password,
             validator: (value) =>
                 value.isEmpty ? 'Senha não pode ser vazio.' : null),
       ];
@@ -132,9 +141,14 @@ class _LoginState extends State<Login> {
             border:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
           ),
-          onSaved: (email) => _email = email,
-          validator: (email) =>
-              email.isEmpty ? 'Usuário não pode ser vazio.' : null,
+          controller: _email,
+          validator: (value) {
+            if (value.isEmpty) {
+              return ('Email não pode ser vazio.');
+            } else if (value != _repeatEmail.text) {
+              return ('Emails não são iguais');
+            }
+          },
         ),
         SizedBox(height: 10),
         TextFormField(
@@ -143,30 +157,47 @@ class _LoginState extends State<Login> {
             border:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
           ),
-          onSaved: (repeatEmail) => _email = repeatEmail,
-          validator: (value) =>
-              value.isEmpty ? 'Usuário não pode ser vazio.' : null,
+          controller: _repeatEmail,
+          validator: (value) {
+            if (value.isEmpty) {
+              return ('Email não pode ser vazio.');
+            } else if (value != _email.text) {
+              return ('Emails não são iguais');
+            }
+          },
         ),
         SizedBox(height: 10),
         TextFormField(
-            decoration: InputDecoration(
-              hintText: "Senha",
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey)),
-            ),
-            onSaved: (value) => _password = value,
-            validator: (value) =>
-                value.isEmpty ? 'Senha não pode ser vazio.' : null),
+          decoration: InputDecoration(
+            hintText: "Senha",
+            border:
+                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          ),
+          controller: _password,
+          validator: (value) {
+            if (value.isEmpty) {
+              return ('Senha não pode ser vazio');
+            } else if (value != _repeatPassword.text) {
+              return ('Senhas não são iguais');
+            }
+          },
+        ),
         SizedBox(height: 10),
         TextFormField(
-            decoration: InputDecoration(
-              hintText: "Digite sua senha novamente",
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey)),
-            ),
-            onSaved: (value) => _password = value,
-            validator: (value) =>
-                value.isEmpty ? 'Senha não pode ser vazio.' : null),
+          decoration: InputDecoration(
+            hintText: "Digite sua senha novamente",
+            border:
+                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          ),
+          controller: _repeatPassword,
+          validator: (value) {
+            if (value.isEmpty) {
+              return ('Senha não pode ser vazio');
+            } else if (value != _password.text) {
+              return ('Senhas não são iguais');
+            }
+          },
+        ),
       ];
     }
   }
@@ -187,7 +218,9 @@ class _LoginState extends State<Login> {
       return [
         ElevatedButton(
           child: Text("Register"),
-          onPressed: validateAndSubmit,
+          onPressed: () {
+            validateAndSubmit();
+          },
         ),
         ElevatedButton(
           child: Text("Already have an Account?"),
