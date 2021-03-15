@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:promoscrapperUI/pelando.dart';
 import 'gatry.dart';
-import 'auth.dart';
+import 'services/auth.dart';
+import 'package:promoscrapperUI/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({this.auth, this.onSignedOut});
