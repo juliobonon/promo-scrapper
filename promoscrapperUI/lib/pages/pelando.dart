@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Photo>> fetchPhotos(http.Client client) async {
-  final response = await http.get(Uri.http('http://0.0.0.0:3000/', '/pelando'));
+  final response =
+      await http.get(Uri.https('promoscrapper.herokuapp.com', '/pelando'));
   // Use the compute function to run parsePhotos in a separate isolate.
   return compute(parsePhotos, response.body);
 }
