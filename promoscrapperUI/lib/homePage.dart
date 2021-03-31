@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:promoscrapperUI/pelando.dart';
-import 'gatry.dart';
+import 'package:promoscrapperUI/pages/pelando.dart';
+import 'pages/gatry.dart';
 import 'services/auth.dart';
-import 'package:promoscrapperUI/services/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({this.auth, this.onSignedOut});
-  final BaseAuth auth;
-  final VoidCallback onSignedOut;
-
   void _signOut() async {
-    try {
-      await auth.signOut();
-      onSignedOut();
-    } catch (e) {
+    try {} catch (e) {
       print(e);
     }
   }
@@ -23,7 +15,14 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(icon: Icon(Icons.logout), onPressed: _signOut)],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              context.read<Auth>().signOut();
+            },
+          )
+        ],
       ),
       body: Center(
         child: ListView(

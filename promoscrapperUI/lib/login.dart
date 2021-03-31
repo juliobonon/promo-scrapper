@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'services/auth.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
-  Login({this.auth, this.onSignedIn});
-  final BaseAuth auth;
-  final VoidCallback onSignedIn;
-
   @override
   _LoginState createState() => _LoginState();
 }
@@ -35,24 +31,16 @@ class _LoginState extends State<Login> {
 
   void validateAndSubmit() async {
     if (validateAndSave()) {
-      try {
-        if (_formType == FormType.login) {
-          User userId = await widget.auth
-              .signInWithEmailAndPassword(_email.text, _password.text);
-          print('Signed in: ' + userId.uid);
-        } else {
-          User userId = await widget.auth
-              .createUserWithEmailandPassword(_email.text, _password.text);
-          print('Registered user: ' + userId.uid);
-        }
-        widget.onSignedIn();
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
-        } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
-        }
-        print("Error: $e");
+      if (_formType == FormType.login) {
+        String status = await context
+            .read<Auth>()
+            .signInWithEmailAndPassword(_email.text, _password.text);
+        print('Status: ' + status);
+      } else {
+        String status = await context
+            .read<Auth>()
+            .createUserWithEmailandPassword(_email.text, _password.text);
+        print('Status: ' + status);
       }
     }
   }
@@ -74,34 +62,36 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "PromoScrapper",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 45),
-              ),
-              Text(
-                "Products on sale aggregator",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
+      body: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "PromoScrapper",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 45),
                 ),
-              ),
-              SizedBox(height: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: buildInputs() + buildButtons(),
-              ),
-            ],
+                Text(
+                  "Products on sale aggregator",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: buildInputs() + buildButtons(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -205,28 +195,43 @@ class _LoginState extends State<Login> {
   List<Widget> buildButtons() {
     if (_formType == FormType.login) {
       return [
-        ElevatedButton(
-          child: Text("Login"),
-          onPressed: validateAndSubmit,
-        ),
-        ElevatedButton(
-          child: Text("Crie uma conta!"),
-          onPressed: moveToRegister,
-        ),
+        SizedBox(height: 10),
+        PromoButton(text: 'Login', function: validateAndSubmit),
+        SizedBox(height: 10),
+        PromoButton(text: 'Create an account', function: moveToRegister),
       ];
     } else {
       return [
-        ElevatedButton(
-          child: Text("Register"),
-          onPressed: () {
-            validateAndSubmit();
-          },
-        ),
-        ElevatedButton(
-          child: Text("Already have an Account?"),
-          onPressed: moveToLogin,
-        ),
+        SizedBox(height: 10),
+        PromoButton(text: 'Register', function: validateAndSubmit),
+        SizedBox(height: 10),
+        PromoButton(text: 'Already have an account?', function: moveToLogin),
       ];
     }
+  }
+}
+
+class PromoButton extends StatelessWidget {
+  PromoButton({@required this.text, this.function});
+
+  final text;
+  final function;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.purple,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.white, fontSize: 18.0),
+        ),
+        onPressed: function,
+      ),
+    );
   }
 }
