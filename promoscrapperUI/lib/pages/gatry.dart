@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:promoscrapperUI/components/productContainer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 Future<List<Photo>> fetchPhotos(http.Client client) async {
@@ -53,9 +54,7 @@ class Gatry extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PromoScrapper'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
       ),
       body: FutureBuilder<List<Photo>>(
         future: fetchPhotos(http.Client()),
@@ -116,94 +115,8 @@ class PhotosList extends StatelessWidget {
                   top: 5,
                   bottom: 5,
                 ),
-                child: Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.purple[800],
-                  ),
-                  padding: EdgeInsets.only(
-                    right: 10,
-                  ),
-                  child: Stack(
-                    children: [
-                      Image.network(
-                        photos[index].imageurl,
-                        width: 180,
-                        height: 180,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        top: 10,
-                        left: 190,
-                        child: Text(
-                          photos[index].name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 35,
-                        right: 80,
-                        child: Text(
-                          photos[index].span,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 10,
-                        right: 5,
-                        child: Text(
-                          photos[index].price,
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 1,
-                        left: 160,
-                        child: FlatButton(
-                          child: Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductPage(),
-                                settings: RouteSettings(
-                                  arguments: photos[index],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 90,
-                        child: FlatButton(
-                          child: Image.asset(
-                            'imgs/gatry.png',
-                            width: 25,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LinkLoja(
-                                  title: photos[index].name,
-                                  url: photos[index].linkgatry,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                child: ProductContainer(
+                  photos: photos[index],
                 ),
               );
             },

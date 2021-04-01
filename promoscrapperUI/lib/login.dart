@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:promoscrapperUI/components/promoButton.dart';
+import 'package:promoscrapperUI/components/promoInput.dart';
 import 'services/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +14,7 @@ enum FormType { login, register }
 class _LoginState extends State<Login> {
   final formKey = new GlobalKey<FormState>();
 
+  final TextEditingController _apelido = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _repeatEmail = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -101,36 +104,31 @@ class _LoginState extends State<Login> {
   List<Widget> buildInputs() {
     if (_formType == FormType.login) {
       return [
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Email",
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          ),
+        PromoInput(
+          name: 'Email',
           controller: _email,
           validator: (value) =>
               value.isEmpty ? 'Usuário não pode ser vazio.' : null,
         ),
         SizedBox(height: 10),
-        TextFormField(
-            decoration: InputDecoration(
-              hintText: "Senha",
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
-              ),
-            ),
-            controller: _password,
-            validator: (value) =>
-                value.isEmpty ? 'Senha não pode ser vazio.' : null),
+        PromoInput(
+          name: 'Senha',
+          controller: _password,
+          validator: (value) =>
+              value.isEmpty ? 'Senha não pode ser vazio.' : null,
+        ),
       ];
     } else {
       return [
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Email",
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          ),
+        PromoInput(
+          name: 'Apelido',
+          controller: _apelido,
+          validator: (value) =>
+              value.isEmpty ? 'Apelido não pode ser vazio.' : null,
+        ),
+        SizedBox(height: 10),
+        PromoInput(
+          name: "Email",
           controller: _email,
           validator: (value) {
             if (value.isEmpty) {
@@ -141,12 +139,8 @@ class _LoginState extends State<Login> {
           },
         ),
         SizedBox(height: 10),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Digite seu e-mail novamente",
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          ),
+        PromoInput(
+          name: "Digite seu e-mail novamente",
           controller: _repeatEmail,
           validator: (value) {
             if (value.isEmpty) {
@@ -157,12 +151,8 @@ class _LoginState extends State<Login> {
           },
         ),
         SizedBox(height: 10),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Senha",
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          ),
+        PromoInput(
+          name: "Senha",
           controller: _password,
           validator: (value) {
             if (value.isEmpty) {
@@ -173,12 +163,8 @@ class _LoginState extends State<Login> {
           },
         ),
         SizedBox(height: 10),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Digite sua senha novamente",
-            border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          ),
+        PromoInput(
+          name: "Digite sua senha novamente",
           controller: _repeatPassword,
           validator: (value) {
             if (value.isEmpty) {
@@ -208,30 +194,5 @@ class _LoginState extends State<Login> {
         PromoButton(text: 'Already have an account?', function: moveToLogin),
       ];
     }
-  }
-}
-
-class PromoButton extends StatelessWidget {
-  PromoButton({@required this.text, this.function});
-
-  final text;
-  final function;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      height: 50,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: Colors.purple,
-        ),
-        child: Text(
-          text,
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
-        onPressed: function,
-      ),
-    );
   }
 }
