@@ -116,7 +116,7 @@ class PhotosList extends StatelessWidget {
                   bottom: 5,
                 ),
                 child: ProductContainer(
-                  photos: photos[index],
+                  snapshot: photos[index],
                 ),
               );
             },

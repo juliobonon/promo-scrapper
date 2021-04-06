@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:promoscrapperUI/pages/gatry.dart';
 
 class ProductContainer extends StatelessWidget {
-  ProductContainer({this.photos});
+  ProductContainer({this.snapshot});
 
-  final photos;
+  final snapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class ProductContainer extends StatelessWidget {
                   border: Border.all(),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   image: DecorationImage(
-                    image: NetworkImage(photos.imageurl),
+                    image: NetworkImage(snapshot.image),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -52,7 +52,7 @@ class ProductContainer extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => ProductPage(),
                           settings: RouteSettings(
-                            arguments: photos,
+                            arguments: snapshot,
                           ),
                         ),
                       );
@@ -68,8 +68,8 @@ class ProductContainer extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => LinkLoja(
-                            title: photos.name,
-                            url: photos.linkgatry,
+                            title: snapshot.name,
+                            url: snapshot.linkgatry,
                           ),
                         ),
                       );
@@ -82,8 +82,8 @@ class ProductContainer extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => LinkLoja(
-                            title: photos.name,
-                            url: photos.linkgatry,
+                            title: snapshot.name,
+                            url: snapshot.linkgatry,
                           ),
                         ),
                       );
@@ -94,13 +94,13 @@ class ProductContainer extends StatelessWidget {
             ],
           ),
           Text(
-            photos.name,
+            snapshot.name,
             style: TextStyle(fontSize: 18.0),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           SizedBox(height: 5),
-          Text(photos.price)
+          Text(snapshot.price)
         ],
       ),
     );
