@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoscrapperUI/pages/pelando.dart';
+import 'package:promoscrapperUI/pages/testing.dart';
 import 'pages/gatry.dart';
-import 'services/auth.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -101,6 +100,12 @@ class HomePage extends StatelessWidget {
               },
             ),
           ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProductList()));
+              },
+              child: Text('Testing...'))
         ],
       ),
     );

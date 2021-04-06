@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:promoscrapperUI/providers/product_provider.dart';
 import 'package:promoscrapperUI/wrapper.dart';
 import 'package:provider/provider.dart';
 import 'services/auth.dart';
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<Auth>(
           create: (_) => Auth(),
+        ),
+        Provider(
+          create: (_) => ProductProvider(),
         ),
         StreamProvider(
           create: (context) => context.read<Auth>().authStateChanges,

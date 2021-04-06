@@ -40,12 +40,12 @@ class _PageWrapperState extends State<PageWrapper> {
         currentIndex: _index,
         items: [
           BottomNavigationBarItem(
-            label: "Products",
-            icon: Icon(Icons.loupe),
-          ),
-          BottomNavigationBarItem(
             label: "Account",
             icon: Icon(Icons.people),
+          ),
+          BottomNavigationBarItem(
+            label: "Products",
+            icon: Icon(Icons.search),
           ),
         ],
       ),
