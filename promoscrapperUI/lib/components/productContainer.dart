@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promoscrapperUI/pages/gatry.dart';
+import 'package:promoscrapperUI/providers/favoriteProduct_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductContainer extends StatelessWidget {
   ProductContainer({this.snapshot});
@@ -8,6 +10,7 @@ class ProductContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favoriteProducts = Provider.of<FavoriteProductProvider>(context);
     return Container(
       height: 200,
       decoration: BoxDecoration(
@@ -78,17 +81,9 @@ class ProductContainer extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.favorite_outline_rounded),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LinkLoja(
-                            title: snapshot.name,
-                            url: snapshot.linkgatry,
-                          ),
-                        ),
-                      );
+                      favoriteProducts.saveEntry();
                     },
-                  ),
+                  )
                 ],
               )
             ],

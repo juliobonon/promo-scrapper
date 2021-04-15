@@ -14,7 +14,7 @@ class Product {
       this.linkloja,
       this.site});
 
-  Map<String, dynamic> createMap() {
+  Map<String, dynamic> toMap() {
     return {
       'image': image,
       'productName': name,
@@ -25,7 +25,7 @@ class Product {
     };
   }
 
-  factory Product.createMap(Map<String, dynamic> json) {
+  factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
         name: json['name'],
         price: json['price'],
