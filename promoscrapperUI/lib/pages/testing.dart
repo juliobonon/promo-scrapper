@@ -14,7 +14,9 @@ class ProductList extends StatelessWidget {
       builder: (context, snapshot) {
         return productsProvider != null
             ? ListView.builder(
-                shrinkWrap: true,
+                padding: EdgeInsets.all(10),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: false,
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   return ProductContainer(
